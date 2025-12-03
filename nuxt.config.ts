@@ -10,7 +10,8 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxt/icon',
     '@nuxt/test-utils',
-    '@primevue/nuxt-module'
+    '@primevue/nuxt-module',
+    '@vueuse/nuxt'
   ],
 
   primevue: {
