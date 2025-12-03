@@ -1771,6 +1771,13 @@
   dependencies:
     "@primeuix/styled" "^0.7.4"
 
+"@primeuix/themes@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@primeuix/themes/-/themes-2.0.2.tgz#48f138813364552cee3d78b327b438a3a9b5d675"
+  integrity sha512-prwQvA3tDGBz8yWSUenaJUttEMCEvPvxwOfFhDPmSe1vwsfVKL2Nmh5eZvtPFQnxmIOPsHZS7zc0/L3CzJ83Eg==
+  dependencies:
+    "@primeuix/styled" "^0.7.4"
+
 "@primeuix/utils@^0.6.0", "@primeuix/utils@^0.6.1", "@primeuix/utils@^0.6.2":
   version "0.6.3"
   resolved "https://registry.yarnpkg.com/@primeuix/utils/-/utils-0.6.3.tgz#0d31e41c530fb64dd487ce768f8c244ca1d0872e"
@@ -5493,7 +5500,7 @@ pretty-bytes@^7.1.0:
   resolved "https://registry.yarnpkg.com/pretty-bytes/-/pretty-bytes-7.1.0.tgz#d788c9906241dbdcd4defab51b6d7470243db9bd"
   integrity sha512-nODzvTiYVRGRqAOvE84Vk5JDPyyxsVk0/fbA/bq7RqlnhksGpset09XTxbpvLTIjoaF7K8Z8DG8yHtKGTPSYRw==
 
-primevue@4.5.1:
+primevue@4.5.1, primevue@^4.5.1:
   version "4.5.1"
   resolved "https://registry.yarnpkg.com/primevue/-/primevue-4.5.1.tgz#bd6d2f7298ec78f0cad912d78981f52a58486fd3"
   integrity sha512-RH6MTfYwX6jno1Io36uYfOUU1WCJ//aWYzlv4hZzOyBwjHTE3lfjP9I3hPtHbjp7I0NiNC4xPwzGRUkw/rdn2g==

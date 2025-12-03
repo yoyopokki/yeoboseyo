@@ -14,9 +14,11 @@
     "@nuxt/icon": "2.1.0",
     "@nuxt/image": "2.0.0",
     "@nuxt/test-utils": "3.20.1",
+    "@primeuix/themes": "^2.0.2",
     "@primevue/nuxt-module": "4.5.1",
     "eslint": "^9.0.0",
     "nuxt": "^4.2.1",
+    "primevue": "^4.5.1",
     "vue": "^3.5.25",
     "vue-router": "^4.6.3"
   }
