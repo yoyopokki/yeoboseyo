@@ -2,6 +2,7 @@
   <div class="call-room">
     <div class="call-room__windows">
       <Card class="call-room__window">
+        <template #title>Пользователь 1</template>
         <template #content>
           <video ref="webcam-window-video" autoplay class="call-roow__webcam" />
         </template>
@@ -9,11 +10,11 @@
     </div>
 
     <div class="call-room__controls">
-      <Button severity="secondary" rounded aria-label="microphone">
+      <Button severity="secondary" rounded aria-label="microphone" @click="toggleMicrophone">
         <Icon name="cil:mic" />
       </Button>
 
-      <Button severity="secondary" rounded aria-label="webcam">
+      <Button severity="secondary" rounded aria-label="webcam" @click="toggleWebcam">
         <Icon name="cil:camera" />
       </Button>
 
@@ -30,6 +31,7 @@ import { useUserMedia, useDevicesList } from '@vueuse/core'
 const {
   videoInputs: cameras,
   audioInputs: microphones,
+  devices,
 } = useDevicesList({
   requestPermissions: true,
 })
@@ -46,12 +48,48 @@ start()
 
 const webcamWindowVideo = useTemplateRef('webcam-window-video')
 
+const webcamIsEnabled = ref(false)
+const microphoneIsEnabled = ref(false)
+
+const setVideoTrackEnabledValue = (value: boolean) => {
+  const videoTrack = stream.value?.getVideoTracks()[0]
+  if (!videoTrack) {
+    return
+  }
+
+  videoTrack.enabled = value
+}
+
+const setAudioTrackEnabledValue = (value: boolean) => {
+  const videoTrack = stream.value?.getAudioTracks()[0]
+  if (!videoTrack) {
+    return
+  }
+
+  videoTrack.enabled = value
+}
+
+const toggleWebcam = () => {
+  webcamIsEnabled.value = !webcamIsEnabled.value
+
+  setVideoTrackEnabledValue(webcamIsEnabled.value)
+}
+
+const toggleMicrophone = () => {
+  microphoneIsEnabled.value = !microphoneIsEnabled.value
+
+  setAudioTrackEnabledValue(microphoneIsEnabled.value)
+}
+
 watchEffect(() => {
   if (!webcamWindowVideo.value || !stream.value) {
     return
   }
 
   webcamWindowVideo.value.srcObject = stream.value
+
+  setVideoTrackEnabledValue(false)
+  setAudioTrackEnabledValue(false)
 })
 </script>
 
