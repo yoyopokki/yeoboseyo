@@ -7,6 +7,7 @@
 <style lang="scss">
 .app {
   height: 100vh;
+  font-family: 'Roboto';
 }
 
 body {

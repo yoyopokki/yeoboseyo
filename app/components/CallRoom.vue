@@ -4,7 +4,9 @@
       <Card class="call-room__window">
         <template #title>Пользователь 1</template>
         <template #content>
-          <video ref="webcam-window-video" autoplay class="call-roow__webcam" />
+          <div class="call-room__webcam-wrapper">
+            <video ref="webcam-window-video" autoplay class="call-room__webcam" />
+          </div>
         </template>
       </Card>
     </div>
@@ -16,6 +18,10 @@
 
       <Button severity="secondary" rounded aria-label="webcam" @click="toggleWebcam">
         <Icon name="cil:camera" />
+      </Button>
+
+      <Button severity="secondary" rounded aria-label="screen-share" @click="toggleScreenShare">
+        <Icon name="cil:screen-desktop" />
       </Button>
 
       <Button severity="danger" rounded aria-label="cancel">
@@ -46,10 +52,17 @@ const { stream, start } = useUserMedia({
 })
 start()
 
+const {
+  stream: screenShareStream,
+  start: screenShareStart,
+  stop: screenShareStop
+} = useDisplayMedia()
+
 const webcamWindowVideo = useTemplateRef('webcam-window-video')
 
 const webcamIsEnabled = ref(false)
 const microphoneIsEnabled = ref(false)
+const screenShareIsEnable = ref(false)
 
 const setVideoTrackEnabledValue = (value: boolean) => {
   const videoTrack = stream.value?.getVideoTracks()[0]
@@ -81,12 +94,26 @@ const toggleMicrophone = () => {
   setAudioTrackEnabledValue(microphoneIsEnabled.value)
 }
 
+const toggleScreenShare = () => {
+  screenShareIsEnable.value = !screenShareIsEnable.value
+
+  if (!screenShareIsEnable.value) {
+    screenShareStop()
+  } else {
+    screenShareStart()
+  }
+}
+
 watchEffect(() => {
-  if (!webcamWindowVideo.value || !stream.value) {
+  if (!webcamWindowVideo.value) {
     return
   }
 
-  webcamWindowVideo.value.srcObject = stream.value
+  if (!screenShareIsEnable.value) {
+    webcamWindowVideo.value.srcObject = stream.value!
+  } else {
+    webcamWindowVideo.value.srcObject = screenShareStream.value!
+  }
 
   setVideoTrackEnabledValue(false)
   setAudioTrackEnabledValue(false)
@@ -96,6 +123,7 @@ watchEffect(() => {
 <style lang="scss">
 .call-room {
   height: 100%;
+  background-color: var(--p-slate-900);
 
   & &__controls {
     position: absolute;
@@ -121,8 +149,16 @@ watchEffect(() => {
   }
 
   & &__webcam {
-    width: 500px;
+    width: 100%;
     height: auto;
+  }
+
+  & &__webcam-wrapper {
+    width: 400px;
+    min-height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 </style>
