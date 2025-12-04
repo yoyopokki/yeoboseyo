@@ -53,11 +53,7 @@
 <script setup lang="ts">
 import { useUserMedia, useDevicesList } from '@vueuse/core';
 
-const {
-  videoInputs: cameras,
-  audioInputs: microphones,
-  devices,
-} = useDevicesList({
+const { videoInputs: cameras, audioInputs: microphones } = useDevicesList({
   requestPermissions: true,
 });
 const currentCamera = computed(() => cameras.value[0]?.deviceId);
@@ -151,7 +147,9 @@ const toggleScreenShare = () => {
 
   if (!screenShareIsEnable.value) {
     screenShareStop();
+    setVideoTrackEnabledValue(webcamIsEnabled.value);
   } else {
+    setVideoTrackEnabledValue(false);
     screenShareStart();
   }
 };
