@@ -45,6 +45,20 @@
             </Card>
           </SplitterPanel>
         </Splitter>
+
+        <!-- Оверлей с окном звонка -->
+        <Teleport to="body">
+          <div v-if="isCallRoomOpen" class="call-room-overlay">
+            <div class="call-room-overlay__backdrop" @click="closeCallRoom" />
+            <div class="call-room-overlay__content">
+              <CallRoom
+                @close="closeCallRoom"
+                :local-user="localCallUser"
+                :remote-user="remoteCallUser"
+              />
+            </div>
+          </div>
+        </Teleport>
       </div>
     </GoogleAuth>
   </div>
@@ -52,6 +66,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { useUserStore } from '~/stores/user';
 
 type UserStatus = 'online' | 'offline';
 
@@ -71,6 +86,16 @@ interface Message {
   time: string;
   from: MessageAuthor;
 }
+
+interface CallRoomUser {
+  id: string | number;
+  name: string | null;
+  email?: string | null;
+  picture?: string | null;
+  status?: UserStatus;
+}
+
+const userStore = useUserStore();
 
 const users = ref<User[]>([
   {
@@ -114,6 +139,35 @@ const allMessages = ref<Message[]>([
 
 const newMessage = ref('');
 
+const isCallRoomOpen = ref(false);
+
+const localCallUser = computed<CallRoomUser | null>(() => {
+  if (!userStore.user) {
+    return null;
+  }
+
+  return {
+    id: userStore.user.id,
+    name: userStore.user.name,
+    email: userStore.user.email,
+    picture: userStore.user.picture,
+    status: 'online',
+  };
+});
+
+const remoteCallUser = computed<CallRoomUser | null>(() => {
+  if (!selectedUser.value) {
+    return null;
+  }
+
+  return {
+    id: selectedUser.value.id,
+    name: selectedUser.value.name,
+    email: selectedUser.value.email ?? null,
+    status: selectedUser.value.status,
+  };
+});
+
 const messages = computed<Message[]>(() => {
   if (!selectedUser.value) {
     return [];
@@ -148,6 +202,14 @@ const callSelectedUser = (): void => {
   if (!selectedUser.value) {
     return;
   }
+
+  // Здесь при необходимости можно добавить логику инициализации звонка
+  // между userStore.user (текущий пользователь) и selectedUser.value.
+  isCallRoomOpen.value = true;
+};
+
+const closeCallRoom = (): void => {
+  isCallRoomOpen.value = false;
 };
 </script>
 
@@ -335,5 +397,31 @@ const callSelectedUser = (): void => {
     align-items: center;
     justify-content: center;
   }
+}
+
+.call-room-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.call-room-overlay__backdrop {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.7);
+}
+
+.call-room-overlay__content {
+  position: relative;
+  width: 90vw;
+  max-width: 1000px;
+  height: 80vh;
+  max-height: 680px;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.75);
+  border-radius: 1rem;
+  overflow: hidden;
 }
 </style>
