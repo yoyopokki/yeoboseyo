@@ -1,6 +1,8 @@
 <template>
   <div class="app">
-    <CallRoom />
+    <GoogleAuth>
+      <CallRoom />
+    </GoogleAuth>
   </div>
 </template>
 
@@ -8,6 +10,8 @@
 .app {
   height: 100vh;
   font-family: 'Roboto';
+  display: flex;
+  flex-direction: column;
 }
 
 body {

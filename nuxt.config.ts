@@ -22,7 +22,14 @@ export default defineNuxtConfig({
     '@primevue/nuxt-module',
     '@vueuse/nuxt',
     '@nuxt/fonts',
+    'nuxt-google-auth',
   ],
+
+  googleAuth: {
+    clientId: process.env.NUXT_PUBLIC_GOOGLE_CLIENT_ID,
+    autoLoadScript: true,
+    promptOneTap: true,
+  },
 
   primevue: {
     options: {

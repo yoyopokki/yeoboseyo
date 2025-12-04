@@ -4506,6 +4506,11 @@ jiti@^2.1.2, jiti@^2.4.2, jiti@^2.6.1:
   resolved "https://registry.yarnpkg.com/jiti/-/jiti-2.6.1.tgz#178ef2fc9a1a594248c20627cd820187a4d78d92"
   integrity sha512-ekilCSN1jwRvIbgeg/57YFh8qQDNbwDb9xT/qu2DAHbFFZUicIl4ygVaAvzveMhMVr3LnpSKTNnwt8PoOfmKhQ==
 
+jose@^6.1.0:
+  version "6.1.3"
+  resolved "https://registry.yarnpkg.com/jose/-/jose-6.1.3.tgz#8453d7be88af7bb7d64a0481d6a35a0145ba3ea5"
+  integrity sha512-0TpaTfihd4QMNwrz/ob2Bp7X04yuxJkjRGi4aKmOqwhov54i6u79oCv7T+C7lo70MKH6BesI3vscD1yb/yzKXQ==
+
 js-tokens@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
@@ -5136,6 +5141,13 @@ nth-check@^2.0.1, nth-check@^2.1.1:
   integrity sha512-lqjrjmaOoAnWfMmBPL+XNnynZh2+swxiX3WUE0s4yEHI6m+AwrK2UZOimIRl3X/4QctVqS8AiZjFqyOGrMXb/w==
   dependencies:
     boolbase "^1.0.0"
+
+nuxt-google-auth@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/nuxt-google-auth/-/nuxt-google-auth-0.1.1.tgz#01c0fac234364aee74a4b528f1a261af1773b2db"
+  integrity sha512-mFOFxznjqFIKryn/XK0CYMolmDvHucELuDXV7KiowOFsMj1rmGCom6AR7Sy9vNb2BKaT2rMfM/7wM1OmpbA1DQ==
+  dependencies:
+    jose "^6.1.0"
 
 nuxt@^4.2.1:
   version "4.2.1"
