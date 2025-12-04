@@ -1,4 +1,4 @@
-import Aura from '@primeuix/themes/aura'
+import Aura from '@primeuix/themes/aura';
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -10,8 +10,8 @@ export default defineNuxtConfig({
     families: [
       {
         name: 'Roboto',
-      }
-    ]
+      },
+    ],
   },
 
   modules: [
@@ -21,14 +21,14 @@ export default defineNuxtConfig({
     '@nuxt/test-utils',
     '@primevue/nuxt-module',
     '@vueuse/nuxt',
-    '@nuxt/fonts'
+    '@nuxt/fonts',
   ],
 
   primevue: {
     options: {
       theme: {
-        preset: Aura
-      }
-    }
-  }
-})
+        preset: Aura,
+      },
+    },
+  },
+});
