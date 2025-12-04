@@ -13,7 +13,10 @@
               class="call-room__webcam"
             />
 
-            <div class="call-room__avatar">
+            <div
+              v-if="!webcamIsEnabled && !screenShareIsEnable"
+              class="call-room__avatar"
+            >
               <div class="call-room__avatar-circle">
                 <img
                   v-if="localUser?.picture"
