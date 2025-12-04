@@ -80,16 +80,49 @@ const {
 const webcamWindowVideo = useTemplateRef('webcam-window-video');
 
 const webcamIsEnabled = ref(false);
-const microphoneIsEnabled = ref(false);
+const microphoneIsEnabled = ref(true);
 const screenShareIsEnable = ref(false);
 
 const setVideoTrackEnabledValue = (value: boolean) => {
-  const videoTrack = stream.value?.getVideoTracks()[0];
-  if (!videoTrack) {
+  const currentStream = stream.value;
+  if (!currentStream) {
     return;
   }
 
-  videoTrack.enabled = value;
+  const currentVideoTrack = currentStream.getVideoTracks()[0];
+
+  if (!value) {
+    if (!currentVideoTrack) {
+      return;
+    }
+
+    currentVideoTrack.stop();
+    currentStream.removeTrack(currentVideoTrack);
+    return;
+  }
+
+  if (currentVideoTrack) {
+    currentVideoTrack.enabled = true;
+    return;
+  }
+
+  if (!navigator.mediaDevices?.getUserMedia) {
+    return;
+  }
+
+  navigator.mediaDevices
+    .getUserMedia({ video: true })
+    .then((newStream) => {
+      const [newVideoTrack] = newStream.getVideoTracks();
+      if (!newVideoTrack) {
+        return;
+      }
+
+      currentStream.addTrack(newVideoTrack);
+    })
+    .catch((error) => {
+      console.error('Failed to enable webcam', error);
+    });
 };
 
 const setAudioTrackEnabledValue = (value: boolean) => {
@@ -123,19 +156,30 @@ const toggleScreenShare = () => {
   }
 };
 
+// Как только медиапоток станет доступен, по умолчанию выключаем видео и включаем микрофон
+watch(
+  stream,
+  () => {
+    setVideoTrackEnabledValue(webcamIsEnabled.value);
+    setAudioTrackEnabledValue(microphoneIsEnabled.value);
+  },
+  { immediate: true }
+);
+
 watchEffect(() => {
   if (!webcamWindowVideo.value) {
     return;
   }
 
-  if (!screenShareIsEnable.value) {
-    webcamWindowVideo.value.srcObject = stream.value!;
-  } else {
-    webcamWindowVideo.value.srcObject = screenShareStream.value!;
+  const sourceStream = !screenShareIsEnable.value
+    ? stream.value
+    : screenShareStream.value;
+
+  if (!sourceStream) {
+    return;
   }
 
-  setVideoTrackEnabledValue(false);
-  setAudioTrackEnabledValue(false);
+  webcamWindowVideo.value.srcObject = sourceStream;
 });
 </script>
 
