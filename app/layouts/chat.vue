@@ -1,48 +1,52 @@
 <template>
-  <div class="chat-layout">
-    <Splitter
-      class="chat-layout__splitter"
-      style="height: 100vh"
-      :gutterSize="4"
-    >
-      <!-- Левая колонка: список пользователей -->
-      <SplitterPanel :size="30" :minSize="20" class="chat-layout__sidebar">
-        <ChatUserList v-model="selectedUser" :users="users" />
-      </SplitterPanel>
+  <div class="chat-page">
+    <GoogleAuth>
+      <div class="chat-layout">
+        <Splitter
+          class="chat-layout__splitter"
+          style="height: 100vh"
+          :gutterSize="4"
+        >
+          <!-- Левая колонка: список пользователей -->
+          <SplitterPanel :size="30" :minSize="20" class="chat-layout__sidebar">
+            <ChatUserList v-model="selectedUser" :users="users" />
+          </SplitterPanel>
 
-      <!-- Правая колонка: чат + кнопка звонка -->
-      <SplitterPanel :size="70" :minSize="40" class="chat-layout__main">
-        <Card class="chat-layout__chat-card">
-          <template #title>
-            <ChatHeader
-              :selected-user="selectedUser"
-              @call="callSelectedUser"
-            />
-          </template>
+          <!-- Правая колонка: чат + кнопка звонка -->
+          <SplitterPanel :size="70" :minSize="40" class="chat-layout__main">
+            <Card class="chat-layout__chat-card">
+              <template #title>
+                <ChatHeader
+                  :selected-user="selectedUser"
+                  @call="callSelectedUser"
+                />
+              </template>
 
-          <template #content>
-            <div class="chat-layout__content">
-              <ChatMessages
-                :messages="messages"
-                :selected-user="selectedUser"
-              />
+              <template #content>
+                <div class="chat-layout__content">
+                  <ChatMessages
+                    :messages="messages"
+                    :selected-user="selectedUser"
+                  />
 
-              <ChatInput
-                v-model="newMessage"
-                :can-send="canSend"
-                :maxlength="1000"
-                :placeholder="
-                  selectedUser
-                    ? 'Напишите сообщение...'
-                    : 'Выберите пользователя, чтобы написать сообщение'
-                "
-                @send="sendMessage"
-              />
-            </div>
-          </template>
-        </Card>
-      </SplitterPanel>
-    </Splitter>
+                  <ChatInput
+                    v-model="newMessage"
+                    :can-send="canSend"
+                    :maxlength="1000"
+                    :placeholder="
+                      selectedUser
+                        ? 'Напишите сообщение...'
+                        : 'Выберите пользователя, чтобы написать сообщение'
+                    "
+                    @send="sendMessage"
+                  />
+                </div>
+              </template>
+            </Card>
+          </SplitterPanel>
+        </Splitter>
+      </div>
+    </GoogleAuth>
   </div>
 </template>
 
@@ -148,8 +152,23 @@ const callSelectedUser = (): void => {
 </script>
 
 <style lang="scss">
+.chat-page {
+  height: 100vh;
+}
+
+.chat-page .google-auth__header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #ffffff;
+  color: var(--p-text-color, #020617);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+}
+
 .chat-layout {
   height: 100vh;
+  padding-top: 56px; // отступ, чтобы шапка дашборда не перекрывала чат
   background-color: var(--p-surface-100);
 
   &__splitter {

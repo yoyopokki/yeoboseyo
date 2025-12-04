@@ -2,11 +2,12 @@
 
 <script setup lang="ts">
 definePageMeta({
+  layout: 'chat',
   middleware: ['auth'],
   auth: {
-    guestOnly: true,
+    requiresAuth: true,
   },
 });
-
-navigateTo('/login');
 </script>
+
+

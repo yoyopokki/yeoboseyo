@@ -1,4 +1,6 @@
-<template />
+<template>
+  <GoogleAuth />
+</template>
 
 <script setup lang="ts">
 definePageMeta({
@@ -7,6 +9,6 @@ definePageMeta({
     guestOnly: true,
   },
 });
-
-navigateTo('/login');
 </script>
+
+

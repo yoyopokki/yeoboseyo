@@ -91,6 +91,8 @@ const onLoginSuccess = (payload: GoogleLoginSuccessPayload): void => {
     picture: claims.picture ?? null,
     token: payload.credential,
   });
+
+  navigateTo('/chat');
 };
 
 const onLoginError = (error: unknown): void => {
@@ -100,6 +102,8 @@ const onLoginError = (error: unknown): void => {
 const onSignOut = (): void => {
   userStore.clearUser();
   userCookie.value = null;
+
+  navigateTo('/login');
 };
 </script>
 
