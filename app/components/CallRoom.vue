@@ -16,36 +16,36 @@
     </div>
 
     <div class="call-room__controls">
-      <Button
+      <CallControlButton
         severity="secondary"
-        rounded
-        aria-label="microphone"
+        ariaLabel="microphone"
+        iconName="cil:mic"
+        :is-enabled="microphoneIsEnabled"
         @click="toggleMicrophone"
-      >
-        <Icon name="cil:mic" />
-      </Button>
+      />
 
-      <Button
+      <CallControlButton
         severity="secondary"
-        rounded
-        aria-label="webcam"
+        ariaLabel="webcam"
+        iconName="cil:camera"
+        :is-enabled="webcamIsEnabled"
         @click="toggleWebcam"
-      >
-        <Icon name="cil:camera" />
-      </Button>
+      />
 
-      <Button
+      <CallControlButton
         severity="secondary"
-        rounded
-        aria-label="screen-share"
+        ariaLabel="screen-share"
+        iconName="cil:screen-desktop"
+        :is-enabled="screenShareIsEnable"
         @click="toggleScreenShare"
-      >
-        <Icon name="cil:screen-desktop" />
-      </Button>
+      />
 
-      <Button severity="danger" rounded aria-label="cancel">
-        <Icon name="cil:x" />
-      </Button>
+      <CallControlButton
+        severity="danger"
+        ariaLabel="cancel"
+        iconName="cil:x"
+        is-enabled
+      />
     </div>
   </div>
 </template>
