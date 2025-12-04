@@ -29,11 +29,22 @@
 </template>
 
 <script setup lang="ts">
-// @ts-nocheck
-
 import { useUserStore } from '~/stores/user';
+import type { GoogleUser } from '~/stores/user';
 
-const userCookie = useCookie('googleUser', {
+type GoogleLoginClaims = {
+  sub?: string;
+  email?: string | null;
+  name?: string | null;
+  picture?: string | null;
+};
+
+type GoogleLoginSuccessPayload = {
+  credential: string;
+  claims?: GoogleLoginClaims;
+};
+
+const userCookie = useCookie<GoogleUser | null>('googleUser', {
   sameSite: 'lax',
   maxAge: 60 * 60 * 24 * 7, // 7 дней
 });
@@ -55,19 +66,19 @@ onBeforeMount(() => {
 
 watch(
   () => userStore.user,
-  (value) => {
+  (value: GoogleUser | null) => {
     if (!value) {
       userCookie.value = null;
       return;
     }
 
-    userCookie.value = JSON.stringify(value);
+    userCookie.value = value;
   },
   { deep: true }
 );
 
-const onLoginSuccess = (payload) => {
-  const claims = payload?.claims || {};
+const onLoginSuccess = (payload: GoogleLoginSuccessPayload): void => {
+  const claims = payload?.claims ?? {};
 
   if (!claims.sub) {
     return;
@@ -82,11 +93,11 @@ const onLoginSuccess = (payload) => {
   });
 };
 
-const onLoginError = (error) => {
+const onLoginError = (error: unknown): void => {
   console.error(error);
 };
 
-const onSignOut = () => {
+const onSignOut = (): void => {
   userStore.clearUser();
   userCookie.value = null;
 };

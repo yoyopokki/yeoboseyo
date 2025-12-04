@@ -15,10 +15,12 @@
 </template>
 
 <script setup lang="ts">
+import type { ButtonProps } from 'primevue/button';
+
 defineProps<{
   isEnabled: boolean;
   ariaLabel: string;
-  severity: string;
+  severity: ButtonProps['severity'];
   iconName: string;
 }>();
 
@@ -48,5 +50,3 @@ defineEmits<{
   }
 }
 </style>
-
-

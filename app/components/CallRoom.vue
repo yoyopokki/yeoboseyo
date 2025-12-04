@@ -73,13 +73,15 @@ const {
   stop: screenShareStop,
 } = useDisplayMedia();
 
-const webcamWindowVideo = useTemplateRef('webcam-window-video');
+const webcamWindowVideo = useTemplateRef<HTMLVideoElement | null>(
+  'webcam-window-video'
+);
 
-const webcamIsEnabled = ref(false);
-const microphoneIsEnabled = ref(true);
-const screenShareIsEnable = ref(false);
+const webcamIsEnabled = ref<boolean>(false);
+const microphoneIsEnabled = ref<boolean>(true);
+const screenShareIsEnable = ref<boolean>(false);
 
-const setVideoTrackEnabledValue = (value: boolean) => {
+const setVideoTrackEnabledValue = (value: boolean): void => {
   const currentStream = stream.value;
   if (!currentStream) {
     return;
@@ -121,7 +123,7 @@ const setVideoTrackEnabledValue = (value: boolean) => {
     });
 };
 
-const setAudioTrackEnabledValue = (value: boolean) => {
+const setAudioTrackEnabledValue = (value: boolean): void => {
   const videoTrack = stream.value?.getAudioTracks()[0];
   if (!videoTrack) {
     return;
@@ -130,19 +132,19 @@ const setAudioTrackEnabledValue = (value: boolean) => {
   videoTrack.enabled = value;
 };
 
-const toggleWebcam = () => {
+const toggleWebcam = (): void => {
   webcamIsEnabled.value = !webcamIsEnabled.value;
 
   setVideoTrackEnabledValue(webcamIsEnabled.value);
 };
 
-const toggleMicrophone = () => {
+const toggleMicrophone = (): void => {
   microphoneIsEnabled.value = !microphoneIsEnabled.value;
 
   setAudioTrackEnabledValue(microphoneIsEnabled.value);
 };
 
-const toggleScreenShare = () => {
+const toggleScreenShare = (): void => {
   screenShareIsEnable.value = !screenShareIsEnable.value;
 
   if (!screenShareIsEnable.value) {
