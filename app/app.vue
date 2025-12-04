@@ -1,8 +1,8 @@
 <template>
   <div class="app">
-    <GoogleAuth>
-      <CallRoom />
-    </GoogleAuth>
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
   </div>
 </template>
 
