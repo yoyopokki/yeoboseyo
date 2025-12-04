@@ -22,6 +22,7 @@ export default defineNuxtConfig({
     '@primevue/nuxt-module',
     '@vueuse/nuxt',
     '@nuxt/fonts',
+    '@pinia/nuxt',
     'nuxt-google-auth',
   ],
 

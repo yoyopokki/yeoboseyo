@@ -183,6 +183,7 @@ watchEffect(() => {
 
 <style lang="scss">
 .call-room {
+  width: 100%;
   height: 100%;
   background-color: var(--p-slate-900);
 

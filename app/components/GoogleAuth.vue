@@ -18,7 +18,7 @@
           </span>
         </div>
 
-        <button type="button" class="google-auth__logout" @click="signOut">
+        <button type="button" class="google-auth__logout" @click="onSignOut">
           Выйти
         </button>
       </header>
@@ -29,15 +29,66 @@
 </template>
 
 <script setup lang="ts">
-const { isAuthenticated, user, signOut } = useGoogleAuth();
+// @ts-nocheck
 
-const onLoginSuccess = (payload: unknown) => {
-  // Здесь вы можете отправить токен на бэкенд или сохранить профиль пользователя в сторе
-  console.log('Google login success', payload);
+import { useUserStore } from '~/stores/user';
+
+const userCookie = useCookie('googleUser', {
+  sameSite: 'lax',
+  maxAge: 60 * 60 * 24 * 7, // 7 дней
+});
+
+const userStore = useUserStore();
+const user = computed(() => userStore.user);
+const isAuthenticated = computed(() => userStore.isAuthenticated);
+
+onBeforeMount(() => {
+  if (!userStore.user && userCookie.value) {
+    try {
+      userStore.setUser({ ...userCookie.value });
+    } catch (e) {
+      console.warn(e);
+      userCookie.value = null;
+    }
+  }
+});
+
+watch(
+  () => userStore.user,
+  (value) => {
+    if (!value) {
+      userCookie.value = null;
+      return;
+    }
+
+    userCookie.value = JSON.stringify(value);
+  },
+  { deep: true }
+);
+
+const onLoginSuccess = (payload) => {
+  const claims = payload?.claims || {};
+
+  if (!claims.sub) {
+    return;
+  }
+
+  userStore.setUser({
+    id: claims.sub,
+    email: claims.email ?? null,
+    name: claims.name ?? null,
+    picture: claims.picture ?? null,
+    token: payload.credential,
+  });
 };
 
-const onLoginError = (error: unknown) => {
-  console.error('Google login error', error);
+const onLoginError = (error) => {
+  console.error(error);
+};
+
+const onSignOut = () => {
+  userStore.clearUser();
+  userCookie.value = null;
 };
 </script>
 
@@ -91,5 +142,3 @@ const onLoginError = (error: unknown) => {
   cursor: pointer;
 }
 </style>
-
-
