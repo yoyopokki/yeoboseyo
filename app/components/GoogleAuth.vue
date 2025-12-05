@@ -1,8 +1,6 @@
 <template>
   <div class="google-auth">
     <div v-if="!isAuthenticated" class="google-auth__auth">
-      <h2 class="google-auth__title">Вход через Google</h2>
-
       <GoogleLoginButton
         :options="{ theme: 'filled_blue', size: 'large' }"
         @success="onLoginSuccess"
