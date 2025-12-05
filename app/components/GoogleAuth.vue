@@ -44,6 +44,8 @@ type GoogleLoginSuccessPayload = {
   claims?: GoogleLoginClaims;
 };
 
+const runtimeConfig = useRuntimeConfig();
+
 const userCookie = useCookie<GoogleUser | null>('googleUser', {
   sameSite: 'lax',
   maxAge: 60 * 60 * 24 * 7, // 7 дней
@@ -77,19 +79,35 @@ watch(
   { deep: true }
 );
 
-const onLoginSuccess = (payload: GoogleLoginSuccessPayload): void => {
+const onLoginSuccess = async (
+  payload: GoogleLoginSuccessPayload
+): Promise<void> => {
   const claims = payload?.claims ?? {};
 
   if (!claims.sub) {
     return;
   }
 
+  const { data, error } = await useFetch<{
+    token: string;
+    user: GoogleLoginClaims;
+  }>(`${runtimeConfig.public.apiUrl}/auth/google/frontend`, {
+    method: 'post',
+    body: { id_token: payload.credential },
+  });
+
+  if (error.value || !data.value) {
+    console.error(error.value);
+    return;
+  }
+
+  const { token, user } = data.value;
   userStore.setUser({
-    id: claims.sub,
-    email: claims.email ?? null,
-    name: claims.name ?? null,
-    picture: claims.picture ?? null,
-    token: payload.credential,
+    id: user.sub ?? '',
+    email: user.email ?? null,
+    name: user.name ?? null,
+    picture: user.picture ?? null,
+    token,
   });
 
   navigateTo('/chat');
