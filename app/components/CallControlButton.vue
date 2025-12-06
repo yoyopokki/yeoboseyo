@@ -29,7 +29,7 @@ defineEmits<{
 }>();
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .call-control-button__icon {
   position: relative;
   display: inline-flex;

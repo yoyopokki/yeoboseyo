@@ -1,6 +1,6 @@
 <template>
   <div class="google-auth">
-    <div v-if="!isAuthenticated" class="google-auth__auth">
+    <div v-if="!isAuthenticated" class="google-auth__button-wrapper">
       <GoogleLoginButton
         :options="{ theme: 'filled_blue', size: 'large' }"
         @success="onLoginSuccess"
@@ -127,49 +127,44 @@ const onSignOut = (): void => {
 .google-auth {
   height: 100%;
   position: relative;
-}
 
-.google-auth__auth {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 16px;
-}
+  &__button-wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+  }
 
-.google-auth__title {
-  margin: 0;
-  color: #ffffff;
-}
+  &__content {
+    height: 100%;
+  }
 
-.google-auth__content {
-  height: 100%;
-}
+  &__header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px;
+    color: $color-white;
+  }
 
-.google-auth__header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 10;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 16px;
-  color: #ffffff;
-}
+  &__user-name {
+    font-weight: 500;
+  }
 
-.google-auth__user-name {
-  font-weight: 500;
-}
-
-.google-auth__logout {
-  border: none;
-  border-radius: 4px;
-  padding: 6px 12px;
-  background-color: #ef4444;
-  color: #ffffff;
-  cursor: pointer;
+  &__logout {
+    border: none;
+    border-radius: 4px;
+    padding: 6px 12px;
+    background-color: $color-error;
+    color: $color-white;
+    cursor: pointer;
+  }
 }
 </style>

@@ -91,16 +91,8 @@
 
 <script setup lang="ts">
 import { useUserMedia, useDevicesList } from '@vueuse/core';
-
-type UserStatus = 'online' | 'offline';
-
-interface CallRoomUser {
-  id: string | number;
-  name: string | null;
-  email?: string | null;
-  picture?: string | null;
-  status?: UserStatus;
-}
+import type { CallRoomUser } from '~/types/user';
+import { getInitial } from '~/helpers/string';
 
 defineProps<{
   localUser: CallRoomUser | null;
@@ -110,14 +102,6 @@ defineProps<{
 defineEmits<{
   (e: 'close'): void;
 }>();
-
-const getInitial = (
-  name: string | null | undefined,
-  fallback: string
-): string => {
-  const base = name && name.trim().length > 0 ? name.trim() : fallback;
-  return base.charAt(0).toUpperCase();
-};
 
 const { videoInputs: cameras, audioInputs: microphones } = useDevicesList({
   requestPermissions: true,
@@ -249,7 +233,7 @@ watchEffect(() => {
 });
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .call-room {
   width: 100%;
   height: 100%;
@@ -262,7 +246,7 @@ watchEffect(() => {
     'Segoe UI',
     sans-serif;
 
-  & &__controls {
+  &__controls {
     position: absolute;
     bottom: 0;
     width: 100%;
@@ -273,7 +257,7 @@ watchEffect(() => {
     padding: 15px 0;
   }
 
-  & &__windows {
+  &__windows {
     height: 100%;
     display: flex;
     justify-content: center;
@@ -282,17 +266,17 @@ watchEffect(() => {
     padding-bottom: 64px;
   }
 
-  & &__window {
+  &__window {
     width: max-content;
     max-width: 460px;
   }
 
-  & &__webcam {
+  &__webcam {
     width: 100%;
     height: auto;
   }
 
-  & &__webcam-wrapper {
+  &__webcam-wrapper {
     width: 400px;
     min-height: 200px;
     display: flex;
@@ -301,14 +285,14 @@ watchEffect(() => {
     position: relative;
   }
 
-  & &__placeholder {
-    color: #e5e7eb;
+  &__placeholder {
+    color: $color-text-secondary;
     font-size: 0.9rem;
     text-align: center;
     opacity: 0.8;
   }
 
-  & &__avatar {
+  &__avatar {
     position: absolute;
     inset: 0;
     display: flex;
@@ -317,18 +301,18 @@ watchEffect(() => {
     pointer-events: none;
   }
 
-  & &__avatar-circle {
+  &__avatar-circle {
     width: 96px;
     height: 96px;
     border-radius: 9999px;
-    background-color: #1e293b;
-    border: 2px solid rgba(148, 163, 184, 0.8);
+    background-color: $color-background-dark;
+    border: 2px solid $color-border-light;
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
-  & &__avatar-image {
+  &__avatar-image {
     width: 100%;
     height: 100%;
     border-radius: inherit;
@@ -336,8 +320,8 @@ watchEffect(() => {
     display: block;
   }
 
-  & &__avatar-initials {
-    color: #e5e7eb;
+  &__avatar-initials {
+    color: $color-text-secondary;
     font-weight: 600;
     font-size: 2rem;
     text-transform: uppercase;

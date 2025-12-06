@@ -1,5 +1,5 @@
 <template>
-  <Card class="chat-layout__sidebar-card">
+  <Card class="chat-user-list">
     <template #title>Пользователи</template>
     <template #content>
       <Listbox
@@ -9,13 +9,13 @@
         class="w-full"
       >
         <template #option="slotProps">
-          <div class="chat-layout__user-item">
-            <div class="chat-layout__user-main">
-              <span class="chat-layout__user-name">
+          <div class="chat-user-list__user-item">
+            <div class="chat-user-list__user-main">
+              <span class="chat-user-list__user-name">
                 {{ slotProps.option.name }}
               </span>
               <small
-                class="chat-layout__user-email"
+                class="chat-user-list__user-email"
                 v-if="slotProps.option.email"
               >
                 {{ slotProps.option.email }}
@@ -30,7 +30,7 @@
               :severity="
                 slotProps.option.status === 'online' ? 'success' : 'secondary'
               "
-              class="chat-layout__user-status"
+              class="chat-user-list__user-status"
             />
           </div>
         </template>
@@ -40,14 +40,7 @@
 </template>
 
 <script setup lang="ts">
-type UserStatus = 'online' | 'offline';
-
-interface User {
-  id: number;
-  name: string;
-  email?: string;
-  status?: UserStatus;
-}
+import type { User } from '~/types/user';
 
 const props = defineProps<{
   users: User[];
@@ -65,4 +58,35 @@ const internalSelectedUser = computed({
 });
 </script>
 
+<style scoped lang="scss">
+.chat-user-list {
+  height: 100%;
 
+  &__user-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    padding-block: 0.25rem;
+  }
+
+  &__user-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  &__user-name {
+    font-weight: 600;
+  }
+
+  &__user-email {
+    font-size: 0.8rem;
+    color: var(--p-text-muted-color);
+  }
+
+  &__user-status {
+    white-space: nowrap;
+  }
+}
+</style>

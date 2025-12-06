@@ -67,33 +67,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { useUserStore } from '~/stores/user';
-
-type UserStatus = 'online' | 'offline';
-
-interface User {
-  id: number;
-  name: string;
-  email?: string;
-  status?: UserStatus;
-}
-
-type MessageAuthor = 'me' | 'them';
-
-interface Message {
-  id: number;
-  userId: number;
-  text: string;
-  time: string;
-  from: MessageAuthor;
-}
-
-interface CallRoomUser {
-  id: string | number;
-  name: string | null;
-  email?: string | null;
-  picture?: string | null;
-  status?: UserStatus;
-}
+import type { User, CallRoomUser } from '~/types/user';
+import type { Message } from '~/types/message';
 
 const userStore = useUserStore();
 
@@ -213,19 +188,19 @@ const closeCallRoom = (): void => {
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .chat-page {
   height: 100vh;
 }
 
-.chat-page .google-auth__header {
+.chat-page :deep(.google-auth__header) {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  background-color: #ffffff;
-  color: var(--p-text-color, #020617);
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+  background-color: $color-white;
+  color: var(--p-text-color, $color-text-primary);
+  box-shadow: 0 1px 2px $color-background-overlay-light;
 }
 
 .chat-layout {
@@ -241,37 +216,6 @@ const closeCallRoom = (): void => {
     padding: 1rem;
     background-color: var(--p-surface-0);
     border-right: 1px solid var(--p-surface-200);
-  }
-
-  &__sidebar-card {
-    height: 100%;
-  }
-
-  &__user-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 0.5rem;
-    padding-block: 0.25rem;
-  }
-
-  &__user-main {
-    display: flex;
-    flex-direction: column;
-    gap: 0.1rem;
-  }
-
-  &__user-name {
-    font-weight: 600;
-  }
-
-  &__user-email {
-    font-size: 0.8rem;
-    color: var(--p-text-muted-color);
-  }
-
-  &__user-status {
-    white-space: nowrap;
   }
 
   &__main {
@@ -299,103 +243,12 @@ const closeCallRoom = (): void => {
     }
   }
 
-  &__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-  }
-
-  &__header-info {
-    display: flex;
-    flex-direction: column;
-    gap: 0.1rem;
-  }
-
-  &__header-title {
-    font-weight: 600;
-    font-size: 1.05rem;
-  }
-
-  &__header-subtitle {
-    font-size: 0.85rem;
-    color: var(--p-text-muted-color);
-  }
-
   &__content {
     display: flex;
     flex-direction: column;
     height: 100%;
     min-height: 0;
     gap: 0.75rem;
-  }
-
-  &__messages {
-    flex: 1;
-    min-height: 0;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    padding-block: 0.5rem 1rem;
-  }
-
-  &__message {
-    max-width: 70%;
-    padding: 0.5rem 0.75rem;
-    border-radius: 0.75rem;
-    font-size: 0.9rem;
-    box-shadow: var(--p-card-shadow);
-  }
-
-  &__message--from-me {
-    align-self: flex-end;
-    background-color: var(--p-primary-100);
-  }
-
-  &__message--from-them {
-    align-self: flex-start;
-    background-color: var(--p-surface-200);
-  }
-
-  &__message-meta {
-    margin-top: 0.25rem;
-    font-size: 0.75rem;
-    color: var(--p-text-muted-color);
-    text-align: right;
-  }
-
-  &__empty-state {
-    margin: auto;
-    text-align: center;
-    color: var(--p-text-muted-color);
-    font-size: 0.9rem;
-  }
-
-  &__input {
-    border-top: 1px solid var(--p-surface-200);
-    padding-top: 0.75rem;
-  }
-
-  &__input-inner {
-    position: relative;
-  }
-
-  &__input-textarea {
-    width: 100%;
-    padding-right: 2.75rem; // место под иконку отправки
-  }
-
-  &__send-icon-button {
-    position: absolute;
-    top: 50%;
-    right: 0.75rem;
-    transform: translateY(-50%);
-    width: 2.25rem;
-    height: 2.25rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
   }
 }
 
@@ -411,7 +264,7 @@ const closeCallRoom = (): void => {
 .call-room-overlay__backdrop {
   position: absolute;
   inset: 0;
-  background-color: rgba(15, 23, 42, 0.7);
+  background-color: $color-background-overlay;
 }
 
 .call-room-overlay__content {
@@ -420,7 +273,7 @@ const closeCallRoom = (): void => {
   max-width: 1000px;
   height: 80vh;
   max-height: 680px;
-  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.75);
+  box-shadow: 0 25px 50px -12px $color-background-overlay-medium;
   border-radius: 1rem;
   overflow: hidden;
 }

@@ -1,18 +1,18 @@
 <template>
-  <div class="chat-layout__input">
-    <div class="chat-layout__input-inner">
+  <div class="chat-input">
+    <div class="chat-input__inner">
       <Textarea
         v-model="internalValue"
         rows="3"
         autoResize
         :maxlength="maxlength"
-        class="chat-layout__input-textarea"
+        class="chat-input__textarea"
         :placeholder="placeholder"
         @keydown.enter.exact.prevent="$emit('send')"
       />
 
       <Button
-        class="chat-layout__send-icon-button"
+        class="chat-input__send-icon-button"
         @click="$emit('send')"
         rounded
         severity="primary"
@@ -43,3 +43,31 @@ const internalValue = computed({
   },
 });
 </script>
+
+<style scoped lang="scss">
+.chat-input {
+  border-top: 1px solid var(--p-surface-200);
+  padding-top: 0.75rem;
+
+  &__inner {
+    position: relative;
+  }
+
+  &__textarea {
+    width: 100%;
+    padding-right: 2.75rem; // место под иконку отправки
+  }
+
+  &__send-icon-button {
+    position: absolute;
+    top: 50%;
+    right: 0.75rem;
+    transform: translateY(-50%);
+    width: 2.25rem;
+    height: 2.25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+</style>
